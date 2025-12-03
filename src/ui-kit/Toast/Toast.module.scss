@@ -1,0 +1,21 @@
+.container {
+  width: 242px;
+  height: 52px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 16px 50px rgba(0, 0, 0, 0.24);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color: #323749;
+  background-color: white;
+  align-items: center;
+  padding: 0 16px 0;
+}
+
+.text {
+  color: #323749;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1;
+}

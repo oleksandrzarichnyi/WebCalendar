@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  column-gap: 23px;
+  row-gap: 24px;
+  max-width: 230px;
+  flex-wrap: wrap;
+  border: 1px solid #DEDFE5;
+  border-radius: 8px;
+  padding: 7px;
+}
+
+.radio-to-hide {
+  position: absolute;
+  opacity: 0;
+  width: 16px;
+  height: 16px;
+  top: 0;
+}
+
+.color-to-display {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  z-index: 3;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
