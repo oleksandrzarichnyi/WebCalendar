@@ -1,12 +1,13 @@
 import styles from './Buttons.module.scss'
 import icons from '../icons/icons.jsx'
 
-export default function CustomButton({ variant, onClick, text, icon, selected, isActive, type, iconRight, ...props }) {
+export default function CustomButton({ variant, onClick, text, icon, selected, isActive, type, iconRight, maxWidth, gap, ...props }) {
 
   return (
     <button
       {...props}
       className={`${styles[`${variant}`]} ${isActive && styles[`${variant}--active`]}`}
+      style={{ maxWidth: maxWidth, gap: gap }}
       onClick={onClick}
       type={type}
     >

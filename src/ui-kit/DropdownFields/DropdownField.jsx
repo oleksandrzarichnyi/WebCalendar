@@ -2,7 +2,7 @@ import { useState } from "react"
 import styles from "./DropdownFields.module.scss"
 import CustomButton from '../Buttons/CustomButton.jsx'
 
-export default function DropdownField({ options = [], placeholder, buttonVariant, dropdown, buttonIconRight, buttonIconLeft }) {
+export default function DropdownField({ options = [], placeholder, buttonVariant, dropdown, buttonIconRight, buttonIconLeft, buttonGap }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -25,6 +25,7 @@ export default function DropdownField({ options = [], placeholder, buttonVariant
         text={placeholder} 
         onClick={toggle} 
         selected={selected} 
+        gap={buttonGap}
         isActive={buttonVariant === 'dropdown-weekday' ? open : ''} 
         iconRight={buttonIconRight}
       />

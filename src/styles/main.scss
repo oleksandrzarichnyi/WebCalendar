@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components; 
 @tailwind utilities;
+
+body {
+  background-color: #F2F5F7;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.container {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
