@@ -1,7 +1,8 @@
 import styles from './DatePicker.module.scss'
 import CustomButton from '../Buttons/CustomButton.jsx'
-import { useState } from 'react'
-import { months, MapDays } from './datePickerFunctions'
+import { useEffect, useState } from 'react'
+import { months, MapDays } from './MapDays.jsx'
+import { useDateStore } from '../../hooks/useDateStore.jsx'
 
 export default function DatePicker({ initialMonthIndex = 10 }) {
   const [monthIndex, setMonthIndex] = useState(initialMonthIndex);
@@ -9,6 +10,27 @@ export default function DatePicker({ initialMonthIndex = 10 }) {
   const [selectedDate, setSelectedDate] = useState('');
 
   const currentMonth = months[monthIndex].name;
+
+  const { storedMonthIndex, setStoredMonthIndex, setYear, setMonth, date, storedSelectedDate } = useDateStore();
+
+  useEffect(() => {
+    setStoredMonthIndex(monthIndex);
+    setYear(currentYear);
+    setMonth(currentMonth);
+  }, [monthIndex]);
+
+  useEffect(() => {
+    if (storedMonthIndex !== null) {
+      setMonthIndex(storedMonthIndex);
+    }
+  }, [storedMonthIndex]);
+
+  useEffect(() => {
+    setCurrentYear(date.year)
+  }, [date.year]);
+
+  console.log(date);
+  console.log(storedSelectedDate);
 
   function handleNextMonth() {
     if (monthIndex === 11) {

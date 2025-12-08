@@ -3,8 +3,11 @@ import styles from './Header.module.scss'
 import logo from '../../img/logo.svg'
 import CustomButton from '../../ui-kit/Buttons/CustomButton.jsx'
 import DropdownField from '../../ui-kit/DropdownFields/DropdownField.jsx'
+import { useDateStore } from '../../hooks/useDateStore.jsx'
 
 export default function Header() {
+  const { date, setPrevMonth, setNextMonth } = useDateStore();
+  
   return (
     <div className={styles['header']}>
       <div className="container flex justify-between">
@@ -12,13 +15,13 @@ export default function Header() {
           <img src={logo} className={styles['logo']} alt="" />
           <CustomButton variant="primary" text="Today" />
           <div className="flex gap-[8px]">
-            <CustomButton variant="secondary" maxWidth={'36px'} icon="arrowLeftIcon" />
-            <CustomButton variant="secondary" maxWidth={'36px'} icon="arrowRightIcon" />
+            <CustomButton variant="secondary" maxWidth={'36px'} icon="arrowLeftIcon" onClick={() => setPrevMonth()} />
+            <CustomButton variant="secondary" maxWidth={'36px'} icon="arrowRightIcon" onClick={() => setNextMonth()} />
           </div>
-          <p className={styles['date']}>December 2025</p>
+          <p className={styles['date']}>{date.month} {date.year}</p>
         </div>
         <div className="flex gap-[32px]">
-          <DropdownField dropdown="dropdown-weekday" buttonVariant="secondary" options={['Day', 'Week']} buttonIconRight="downIcon" buttonGap="4px" />
+          <DropdownField dropdown="dropdown-weekday" buttonVariant="secondary" placeholder={'Week'} options={['Day', 'Week']} buttonIconRight="downIcon" buttonGap="4px" />
         </div>
       </div>
     </div>

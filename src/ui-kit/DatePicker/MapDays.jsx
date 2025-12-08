@@ -1,4 +1,5 @@
 import styles from './DatePicker.module.scss'
+import { useDateStore } from '../../hooks/useDateStore'
 
 const fillDays = (number) => {
   let days = [];
@@ -28,6 +29,8 @@ export const months = [
 export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDate, month, setCurrentYear, currentYear }) {
   const neededDays = () => 39 - months[monthIndex].days.length;
 
+  const { setStoredSelectedDate } = useDateStore();
+
   const currentMonth = 
     month === 'current' 
       ? months[monthIndex]
@@ -46,8 +49,6 @@ export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDa
   }
 
   function handleDateSelect(dayId) {
-    setSelectedDate(dayId);
-
     const prevMonth = months[monthIndex - 1] ? months[monthIndex - 1].name : months[11].name;
     const nextMonth = months[monthIndex + 1] ? months[monthIndex + 1].name : months[0].name;
 
@@ -65,17 +66,20 @@ export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDa
       if (monthIndex === 11) {
         setMonthIndex(0);
         setCurrentYear(prev => prev + 1);
+        
         return
       }
       
       setMonthIndex(prev => prev + 1);
     }
+
+    setSelectedDate(dayId);
   }
 
   return (
     <>
       {neededMonthDays[month]().map((day) => {
-        const dayId = `${currentMonth.name}-${day}-${currentYear}`
+        const dayId = `${currentMonth.name}-${day}-${currentYear}`;
 
         return (
           <label 
@@ -85,7 +89,10 @@ export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDa
               ${selectedDate === dayId ? styles['number--active'] : ''}
             `}
             key={dayId}
-            onClick={() => handleDateSelect(dayId)}
+            onClick={() => {
+              handleDateSelect(dayId);
+              setStoredSelectedDate(dayId);
+            }}
           >
             <span>{day}</span>
           </label>
