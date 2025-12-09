@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Field, ErrorMessage } from 'formik'
 import CustomButton from '../Buttons/CustomButton.jsx'
 
-export default function InputField({ type, placeholder, title, name, errors, touched }) {
+export default function InputField({ type, placeholder, title, name, errors, touched, height = '52px', width }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const passwordIcon = showPassword ? 'passwordShownIcon' : 'passwordHiddenIcon';
@@ -11,7 +11,7 @@ export default function InputField({ type, placeholder, title, name, errors, tou
 
   return (
     <>
-      <label className="relative flex flex-col leading-none max-w-[300px] h-[52px] w-full">
+      <label className={`relative flex flex-col leading-none max-w-[300px] h-[${height}] w-[${width}]`}>
         <span className={styles['field-title']}>{title}</span>
         <div className="flex">
           <Field type={`${type === 'password' ? inputType : 'text'}`} name={name} className={styles['field-input']} placeholder={placeholder}></Field>

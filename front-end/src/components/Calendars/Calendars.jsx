@@ -3,6 +3,7 @@ import CustomButton from '../../ui-kit/Buttons/CustomButton.jsx'
 import Checkbox from '../../ui-kit/Checkbox/Checkbox.jsx'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getCalendars, addCalendar } from '../../api/calendarsApi.jsx'
+import CreateCalendar from './CreateCalendar.jsx'
 
 export default function Calendars() {
   const queryClient = useQueryClient();
@@ -33,6 +34,7 @@ export default function Calendars() {
           ))}
         </div>
       </div>
+      <CreateCalendar />
     </>
   )
 }

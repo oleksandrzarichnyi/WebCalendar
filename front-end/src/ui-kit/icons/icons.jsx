@@ -8,6 +8,8 @@ import playIcon from './play-icon.svg'
 import selectedColorIcon from './color-selected-icon.svg'
 import addIcon from './plus-icon.svg'
 import addIconBlack from './plus-icon-black.svg'
+import titleIcon from './title-icon.svg'
+import colorPickerIcon from './color-picker-icon.svg'
 
 export default {
   downIcon,
@@ -19,5 +21,7 @@ export default {
   playIcon,
   selectedColorIcon,
   addIcon,
-  addIconBlack
+  addIconBlack,
+  titleIcon,
+  colorPickerIcon
 }
