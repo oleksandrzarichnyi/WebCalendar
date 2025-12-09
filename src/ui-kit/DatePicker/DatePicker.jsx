@@ -1,15 +1,16 @@
 import styles from './DatePicker.module.scss'
 import CustomButton from '../Buttons/CustomButton.jsx'
 import { useEffect, useState } from 'react'
-import { months, MapDays } from './MapDays.jsx'
+import { MapDays } from './MapDays.jsx'
 import { useDateStore } from '../../hooks/useDateStore.jsx'
+import { MONTHS } from './MONTHS.jsx'
 
 export default function DatePicker({ initialMonthIndex = 10 }) {
   const [monthIndex, setMonthIndex] = useState(initialMonthIndex);
   const [currentYear, setCurrentYear] = useState(2025);
   const [selectedDate, setSelectedDate] = useState('');
 
-  const currentMonth = months[monthIndex].name;
+  const currentMonth = MONTHS[monthIndex].name;
 
   const { storedMonthIndex, setStoredMonthIndex, setYear, setMonth, date, storedSelectedDate } = useDateStore();
 

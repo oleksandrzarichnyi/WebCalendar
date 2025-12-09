@@ -1,45 +1,21 @@
 import styles from './DatePicker.module.scss'
 import { useDateStore } from '../../hooks/useDateStore'
-
-const fillDays = (number) => {
-  let days = [];
-
-  for (let i = 1; i <= number; i++) {
-    days.push(i);
-  }
-  
-  return days;
-}
-
-export const months = [
-  { name: 'January', days: fillDays(31) },
-  { name: 'February', days: fillDays(28) },
-  { name: 'March', days: fillDays(31) },
-  { name: 'April', days: fillDays(30) },
-  { name: 'May', days: fillDays(31) },
-  { name: 'June', days: fillDays(30) },
-  { name: 'July', days: fillDays(31) },
-  { name: 'August', days: fillDays(31) },
-  { name: 'September', days: fillDays(30) },
-  { name: 'October', days: fillDays(31) },
-  { name: 'November', days: fillDays(30) },
-  { name: 'December', days: fillDays(31) },
-];
+import { MONTHS } from './MONTHS.jsx';
 
 export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDate, month, setCurrentYear, currentYear }) {
-  const neededDays = () => 39 - months[monthIndex].days.length;
+  const neededDays = () => 39 - MONTHS[monthIndex].days.length;
 
   const { setStoredSelectedDate } = useDateStore();
 
   const currentMonth = 
     month === 'current' 
-      ? months[monthIndex]
+      ? MONTHS[monthIndex]
       :
     month === 'next'
-      ? months[monthIndex + 1] || months[0]
+      ? MONTHS[monthIndex + 1] || MONTHS[0]
       :
     month === 'prev'
-      ? months[monthIndex - 1] || months[11]
+      ? MONTHS[monthIndex - 1] || MONTHS[11]
       : '';
 
   const neededMonthDays = {
@@ -49,8 +25,8 @@ export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDa
   }
 
   function handleDateSelect(dayId) {
-    const prevMonth = months[monthIndex - 1] ? months[monthIndex - 1].name : months[11].name;
-    const nextMonth = months[monthIndex + 1] ? months[monthIndex + 1].name : months[0].name;
+    const prevMonth = MONTHS[monthIndex - 1] ? MONTHS[monthIndex - 1].name : MONTHS[11].name;
+    const nextMonth = MONTHS[monthIndex + 1] ? MONTHS[monthIndex + 1].name : MONTHS[0].name;
 
     if (dayId.includes(prevMonth)) {
       if (monthIndex === 0) {
