@@ -6,6 +6,8 @@ import arrowLeftIcon from './arrow-left-icon.svg'
 import arrowRightIcon from './arrow-right-icon.svg'
 import playIcon from './play-icon.svg'
 import selectedColorIcon from './color-selected-icon.svg'
+import addIcon from './plus-icon.svg'
+import addIconBlack from './plus-icon-black.svg'
 
 export default {
   downIcon,
@@ -16,4 +18,6 @@ export default {
   arrowRightIcon,
   playIcon,
   selectedColorIcon,
+  addIcon,
+  addIconBlack
 }

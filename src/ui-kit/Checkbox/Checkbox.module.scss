@@ -17,12 +17,17 @@
 .checkbox-to-display {
   position: relative;
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   vertical-align: middle;
-  background-image: url(../icons/checkbox-icon.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: black;
+  -webkit-mask: url(../icons/checkbox-icon.svg) center/contain no-repeat;
+  mask: url(../icons/checkbox-icon.svg) center/contain no-repeat;
 }
 
 .checkbox-to-hide:checked + .checkbox-to-display {
-  background-image: url(../icons/checkbox-checked-icon.svg);
+  -webkit-mask: url(../icons/checkbox-checked-icon.svg) center/contain no-repeat;
+  mask: url(../icons/checkbox-checked-icon.svg) center/contain no-repeat;
 }

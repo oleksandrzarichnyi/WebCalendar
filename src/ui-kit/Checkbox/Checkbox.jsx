@@ -1,7 +1,7 @@
 import styles from './Checkbox.module.scss'
 import { useState } from 'react'
 
-export default function Checkbox({ text, textLeft, isChecked, onChange }) {
+export default function Checkbox({ text, textLeft, isChecked, onChange, color }) {
   const [checked, setChecked] = useState(isChecked);
 
   function handleChange() {
@@ -18,7 +18,7 @@ export default function Checkbox({ text, textLeft, isChecked, onChange }) {
         checked={isChecked && checked}
         onChange={handleChange}
       />
-      <span className={styles['checkbox-to-display']}></span>
+      <span className={styles['checkbox-to-display']} style={{ backgroundColor: color }}></span>
       <span>{text}</span>
     </label>
   )
