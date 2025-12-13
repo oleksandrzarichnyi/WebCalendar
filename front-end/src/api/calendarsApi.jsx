@@ -11,3 +11,26 @@ export async function addCalendar(calendar) {
     body: JSON.stringify(calendar)
   }).then(res => res.json());
 }
+
+export async function deleteCalendar(id) {
+  const response = await fetch(`${BASE_URL}/calendars/${id}`, {
+    method: 'DELETE',
+    headers:  { 'Content-Type': 'application/json' }
+  });
+
+  if (!response.ok) throw new Error('Failed to delete');
+
+  return response.json();
+}
+
+export async function updateCalendar({ id, data }) {
+  const res = await fetch(`${BASE_URL}/calendars/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) throw new Error('Failed to update');
+
+  return res.json();
+}

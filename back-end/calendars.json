@@ -1,26 +1,20 @@
 [
   {
-    "title": "test",
+    "title": "test1",
     "color": "black",
     "events": [],
-    "id": 1765294365746
+    "id": 1765650090252
+  },
+  {
+    "title": "Untitled calendar",
+    "color": "#E25D33",
+    "events": [],
+    "id": 1765650095739
   },
   {
     "title": "test3",
-    "color": "orange",
+    "color": "#8332A4",
     "events": [],
-    "id": 1765297183083
-  },
-  {
-    "title": "test3",
-    "color": "orange",
-    "events": [],
-    "id": 1765297372716
-  },
-  {
-    "title": "test3",
-    "color": "orange",
-    "events": [],
-    "id": 1765297610501
+    "id": 1765650102131
   }
 ]

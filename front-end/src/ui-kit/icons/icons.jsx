@@ -10,6 +10,8 @@ import addIcon from './plus-icon.svg'
 import addIconBlack from './plus-icon-black.svg'
 import titleIcon from './title-icon.svg'
 import colorPickerIcon from './color-picker-icon.svg'
+import deleteIcon from './delete-icon.svg'
+import editIcon from './edit-icon.svg'
 
 export default {
   downIcon,
@@ -23,5 +25,7 @@ export default {
   addIcon,
   addIconBlack,
   titleIcon,
-  colorPickerIcon
+  colorPickerIcon,
+  deleteIcon,
+  editIcon
 }

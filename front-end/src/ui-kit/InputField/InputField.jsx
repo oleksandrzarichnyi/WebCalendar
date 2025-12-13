@@ -11,7 +11,9 @@ export default function InputField({ type, placeholder, title, name, errors, tou
 
   return (
     <>
-      <label className={`relative flex flex-col leading-none max-w-[300px] h-[${height}] w-[${width}]`}>
+      <label 
+        className={`relative flex flex-col leading-none max-w-[300px]`} 
+        style={{ width: width, height: height }}>
         <span className={styles['field-title']}>{title}</span>
         <div className="flex">
           <Field type={`${type === 'password' ? inputType : 'text'}`} name={name} className={styles['field-input']} placeholder={placeholder}></Field>

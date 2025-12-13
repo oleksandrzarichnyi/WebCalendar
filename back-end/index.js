@@ -56,6 +56,18 @@ app.patch('/calendars/:id', (req, res) => {
   res.json({ message: 'Calendar updated' });
 });
 
+app.delete('/calendars/:id', (req, res) => {
+  const calendars = readCalendars();
+  const idToDelete = Number(req.params.id);
+
+  const updated = calendars.filter(calendar => calendar.id !== idToDelete);
+
+  if (updated.length === calendars.length) return res.status(404).json('Calendar not found');
+
+  writeCalendars(updated);
+  res.json(updated);
+});
+
 app.listen(3000, () => {
   console.log('server is running');
 });
