@@ -12,7 +12,7 @@ export default function InputField({ type, placeholder, title, name, errors, tou
   return (
     <>
       <label 
-        className={`relative flex flex-col leading-none max-w-[300px]`} 
+        className={`relative flex flex-col leading-none`} 
         style={{ width: width, height: height }}>
         <span className={styles['field-title']}>{title}</span>
         <div className="flex">

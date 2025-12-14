@@ -2,7 +2,7 @@ import { useState } from "react"
 import styles from "./DropdownFields.module.scss"
 import CustomButton from '../Buttons/CustomButton.jsx'
 
-export default function DropdownField({ options = [], placeholder, buttonVariant, dropdown, buttonIconRight, buttonIconLeft, buttonGap }) {
+export default function DropdownField({ options = [], placeholder, buttonVariant, dropdown, buttonIconRight, buttonIconLeft, buttonGap, title, width, buttonPaddingRight, buttonPaddingLeft }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -14,20 +14,24 @@ export default function DropdownField({ options = [], placeholder, buttonVariant
   };
 
   let dropdownStyle = '';
-  if (dropdown === 'dropdown-time') dropdownStyle = 'container--time';
-  if (dropdown === 'dropdown-weekday') dropdownStyle = 'container--weekday';
+  if (dropdown === 'underline') dropdownStyle = 'container--underline';
+  if (dropdown === 'simple') dropdownStyle = 'container--simple';
 
   return (
-    <div className={`${styles['container']} ${styles[dropdownStyle]}`}>
-      {dropdown === 'dropdown-time' && <h3 className={styles['title']}>Time</h3>}
+    <div 
+      className={`${styles['container']} ${styles[dropdownStyle]}`}
+      style={{ width: width }}
+    >
+      {title ? <h3 className={styles['title']}>{title}</h3> : <h3 className={styles['no-title']}>no-title</h3>}
       <CustomButton 
         variant={buttonVariant}
         text={placeholder} 
         onClick={toggle} 
         selected={selected} 
         gap={buttonGap}
-        isActive={buttonVariant === 'dropdown-weekday' ? open : ''} 
         iconRight={buttonIconRight}
+        paddingLeft={buttonPaddingLeft}
+        paddingRight={buttonPaddingRight}
       />
       {open && (
         <ul className={styles['list']}>

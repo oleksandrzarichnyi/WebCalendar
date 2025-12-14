@@ -12,6 +12,10 @@ import titleIcon from './title-icon.svg'
 import colorPickerIcon from './color-picker-icon.svg'
 import deleteIcon from './delete-icon.svg'
 import editIcon from './edit-icon.svg'
+import clockIcon from './clock-icon.svg'
+import calendarIcon from './calendar-icon.svg'
+import arrowDownIconBlack from './arrow-down-icon-black.svg'
+import descriptionIcon from './description-icon.svg'
 
 export default {
   downIcon,
@@ -27,5 +31,9 @@ export default {
   titleIcon,
   colorPickerIcon,
   deleteIcon,
-  editIcon
+  editIcon,
+  clockIcon,
+  calendarIcon,
+  arrowDownIconBlack,
+  descriptionIcon
 }
