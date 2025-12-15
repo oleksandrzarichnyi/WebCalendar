@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Field, ErrorMessage } from 'formik'
 import CustomButton from '../Buttons/CustomButton.jsx'
 
-export default function InputField({ type, placeholder, title, name, errors, touched, height = '52px', width }) {
+export default function InputField({ type, placeholder, title, name, errors, touched, height = '52px', width, readOnly }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const passwordIcon = showPassword ? 'passwordShownIcon' : 'passwordHiddenIcon';
@@ -13,10 +13,11 @@ export default function InputField({ type, placeholder, title, name, errors, tou
     <>
       <label 
         className={`relative flex flex-col leading-none`} 
-        style={{ width: width, height: height }}>
+        style={{ width: width, height: height }}
+      >
         <span className={styles['field-title']}>{title}</span>
         <div className="flex">
-          <Field type={`${type === 'password' ? inputType : 'text'}`} name={name} className={styles['field-input']} placeholder={placeholder}></Field>
+          <Field type={`${type === 'password' ? inputType : 'text'}`} name={name} className={styles['field-input']} placeholder={placeholder} readOnly={readOnly}></Field>
           {type === 'password' && <CustomButton type="button" icon={`${passwordIcon}`} onClick={() => setShowPassword(prev => !prev)} />}
         </div>
         <div className={`${styles['field-underline']} ${errors[name] && touched[name] ? styles['field-underline--error'] : ""}`}></div>

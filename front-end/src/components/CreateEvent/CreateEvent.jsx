@@ -3,12 +3,32 @@ import CustomButton from '../../ui-kit/Buttons/CustomButton'
 import { Formik, Form, useFormikContext } from 'formik'
 import InputField from '../../ui-kit/InputField/InputField'
 import icons from '../../ui-kit/icons/icons'
-import { useRef } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import DropdownField from '../../ui-kit/DropdownFields/DropdownField'
 import Description from '../../ui-kit/Description/Desctiption'
+import DatePicker from '../../ui-kit/DatePicker/DatePicker'
+
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { getCalendars, addCalendar, deleteCalendar } from '../../api/calendarsApi.jsx'
 
 export default function CreateEvent({ isOpen, onClose }) {
+  const [isDatePicker, setIsDatePicker] = useState(false);
   const titleRef = useRef('');
+
+  const queryClient = useQueryClient();
+  const { data: calendars, isLoading } = useQuery({
+    queryKey: ['calendars'],
+    queryFn: getCalendars
+  });
+
+  const eventOptions = useMemo(() => {
+    if (!calendars) return [];
+    return calendars.map(calendar => calendar.title);
+  }, [calendars]);
+
+  console.log(eventOptions)
+
+  const toggleDatePicker = () => setIsDatePicker(prev => !prev);
 
   return (
     <>
@@ -41,24 +61,32 @@ export default function CreateEvent({ isOpen, onClose }) {
               </Formik>
             </div>
             <div className="flex gap-[16px]">
-              <div className="flex gap-[16px] items-center">
+              <div className="flex gap-[16px] items-center relative">
                 <img src={icons['clockIcon']} alt="" className="w-[16px] h-[16px]" />
-                <Formik
-                  initialValues={{ date: '' }}
-                >
-                  {({errors, touched}) => (
-                    <InputField 
-                      type="text" 
-                      title="Date" 
-                      name="date" 
-                      placeholder="Choose a date" 
-                      errors={errors} 
-                      touched={touched} 
-                      height="40px" 
-                      width="240px"
-                    />
-                  )}
-                </Formik>
+                {isDatePicker ? 
+                  <div className="absolute z-30 top-[44px] left-[30px]">
+                    <DatePicker />
+                  </div>
+                : ''}
+                <label onClick={toggleDatePicker}>
+                  <Formik
+                    initialValues={{ date: '' }}
+                  >
+                    {({errors, touched}) => (
+                      <InputField 
+                        type="text" 
+                        title="Date" 
+                        name="date" 
+                        placeholder="Choose a date" 
+                        errors={errors} 
+                        touched={touched} 
+                        height="40px" 
+                        width="240px"
+                        readOnly={true}
+                      />
+                    )}
+                  </Formik>
+                </label>
               </div>
               <div className="flex gap-[8px]">
                 <DropdownField
@@ -80,14 +108,13 @@ export default function CreateEvent({ isOpen, onClose }) {
             <div className="flex w-[488px] h-[40px] flex justify-between">
               <img src={icons['calendarIcon']} alt="" className="w-[16px] h-[16px] mt-[14px]" />
               <DropdownField
-                options={['1', '2']}
+                options={eventOptions}
                 dropdown="underline"
                 width="456px"
-                placeholder="test"
+                placeholder={eventOptions[0]}
                 title="Calendar"
                 buttonVariant="transparent"
                 buttonIconRight="arrowDownIconBlack"
-                buttonPaddingLeft="24px"
                 buttonPaddingRight="8px"
               />
             </div>
