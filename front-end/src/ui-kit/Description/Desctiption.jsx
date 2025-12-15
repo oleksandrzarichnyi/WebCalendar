@@ -1,6 +1,6 @@
 import styles from './Description.module.scss'
 
-export default function Description({ title, text, maxWidth, width, type }) {
+export default function Description({ title, text, maxWidth, width, type, ref }) {
   return (
     <>
       <div 
@@ -15,7 +15,7 @@ export default function Description({ title, text, maxWidth, width, type }) {
             {text}
           </p>
         : 
-          <textarea className={styles['textarea']} ></textarea>
+          <textarea ref={ref} className={styles['textarea']} ></textarea>
         }
         <div className={styles['underline']}></div>
       </div> 

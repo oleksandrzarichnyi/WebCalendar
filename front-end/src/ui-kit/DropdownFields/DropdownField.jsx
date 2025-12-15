@@ -2,14 +2,15 @@ import { useState } from "react"
 import styles from "./DropdownFields.module.scss"
 import CustomButton from '../Buttons/CustomButton.jsx'
 
-export default function DropdownField({ options = [], placeholder, buttonVariant, dropdown, buttonIconRight, buttonIconLeft, buttonGap, title, width, buttonPaddingRight, buttonPaddingLeft }) {
+export default function DropdownField({ options = [], placeholder, buttonVariant, dropdown, buttonIconRight, buttonIconLeft, buttonGap, title, width, buttonPaddingRight, buttonPaddingLeft, onChange }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
   const toggle = () => setOpen(!open);
 
   const handleSelect = (option) => {
-    setSelected(option);
+    setSelected(option?.title || option);
+    onChange && onChange(option?.id || option);
     setOpen(false);
   };
 
@@ -37,11 +38,11 @@ export default function DropdownField({ options = [], placeholder, buttonVariant
         <ul className={styles['list']}>
           {options.map((option) => (
             <li
-              key={option}
+              key={option?.id || option}
               onClick={() => handleSelect(option)}
               className={styles['item']}
             >
-              {option}
+              {option?.title || option}
             </li>
           ))}
         </ul>

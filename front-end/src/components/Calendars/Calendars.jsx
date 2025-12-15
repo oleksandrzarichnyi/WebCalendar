@@ -48,7 +48,7 @@ export default function Calendars() {
             <div key={calendar.id} className={`${styles['calendar']} flex justify-between relative`}>
               <Checkbox text={calendar.title} color={calendar.color} />
               <div className={`${styles['buttons']} flex gap-[8px]`}>
-                <CustomButton icon="deleteIcon" onClick={() => deleteCalendarMutation.mutate(calendar.id)} />
+                {calendars.length > 1 && <CustomButton icon="deleteIcon" onClick={() => deleteCalendarMutation.mutate(calendar.id)} />}
                 <CustomButton 
                   icon="editIcon" 
                   onClick={() => handleEdit(calendar)} 

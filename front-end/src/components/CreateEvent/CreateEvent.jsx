@@ -3,14 +3,15 @@ import CustomButton from '../../ui-kit/Buttons/CustomButton'
 import { Formik, Form, useFormikContext } from 'formik'
 import InputField from '../../ui-kit/InputField/InputField'
 import icons from '../../ui-kit/icons/icons'
-import { useState, useMemo, useEffect } from 'react'
+import { useRef, useState, useMemo, useEffect } from 'react'
 import DropdownField from '../../ui-kit/DropdownFields/DropdownField'
 import Description from '../../ui-kit/Description/Desctiption'
 import DatePicker from '../../ui-kit/DatePicker/DatePicker'
 import { useEventStore } from '../../hooks/useEventStore.jsx'
-
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { updateCalendar } from '../../api/calendarsApi.jsx'
 import { getCalendars } from '../../api/calendarsApi.jsx'
+import { TIME_INTERVALS } from './TIME_INTERVALS.jsx'
 
 export default function CreateEvent({ isOpen, onClose }) {
   const [isDatePicker, setIsDatePicker] = useState(false);
@@ -20,9 +21,33 @@ export default function CreateEvent({ isOpen, onClose }) {
     queryFn: getCalendars
   });
 
-  const eventOptions = useMemo(() => {
-    if (!calendars) return [];
-    return calendars.map(calendar => calendar.title);
+  const addEventMutation = useMutation({
+    mutationFn: updateCalendar
+  });
+
+  const [selectedCalendarId, setSelectedCalendarId] = useState(null);
+  const titleRef = useRef('');
+  const descRef = useRef('');
+  const [startTime, setStartTime] = useState(TIME_INTERVALS[48]);
+  const [endTime, setEndTime] = useState(TIME_INTERVALS[49]);
+  const [selectedTime, setSelectedTime] = useState([startTime, endTime]);
+  
+  const endTimeIntervals = TIME_INTERVALS.slice(TIME_INTERVALS.indexOf(startTime) + 1);
+
+  useEffect(() => {
+    setSelectedTime([startTime, endTime]);
+  }, [startTime, endTime]);
+
+  useEffect(() => {
+    if (!endTimeIntervals.includes(endTime)) {
+      setEndTime(endTimeIntervals[0]);
+    }
+  }, [startTime]);
+
+  useEffect(() => {
+    if (calendars && calendars.length > 0) {
+      setSelectedCalendarId(calendars[0].id);
+    }
   }, [calendars]);
 
   const toggleDatePicker = () => setIsDatePicker(prev => !prev);
@@ -42,6 +67,24 @@ export default function CreateEvent({ isOpen, onClose }) {
     return formatted;
   }
 
+  function handleNewEvent() {
+    addEventMutation.mutate({
+      id: selectedCalendarId,
+      data: {
+        event: {
+          title: titleRef.current?.values?.title || 'Untitled',
+          date: storedEventDate || 'Not selected',
+          desc: descRef.current.value || 'No description',
+          time: selectedTime,
+          id: Date.now(),
+        }
+      }
+    });
+    onClose();
+    setStartTime(TIME_INTERVALS[48]);
+    setEndTime(TIME_INTERVALS[49]);
+  }
+
   return (
     <>
       {isOpen ? 
@@ -56,6 +99,7 @@ export default function CreateEvent({ isOpen, onClose }) {
               <img src={icons['titleIcon']} alt="" />
               <Formik
                 initialValues={{ title: '' }}
+                innerRef={titleRef}
               >
                 {({ errors, touched }) => (
                   <InputField 
@@ -76,7 +120,7 @@ export default function CreateEvent({ isOpen, onClose }) {
                 <img src={icons['clockIcon']} alt="" className="w-[16px] h-[16px]" />
                 {isDatePicker ? 
                   <div className="absolute z-30 top-[44px] left-[30px]">
-                    <DatePicker useStore="Event" />
+                    <DatePicker initialMonthIndex={11} useStore="Event" />
                   </div>
                 : ''}
                 <label onClick={toggleDatePicker}>
@@ -107,7 +151,9 @@ export default function CreateEvent({ isOpen, onClose }) {
               </div>
               <div className="flex gap-[8px]">
                 <DropdownField
-                  options={['12:30', '01:30']}
+                  options={TIME_INTERVALS}
+                  placeholder={TIME_INTERVALS[48]}
+                  onChange={setStartTime}
                   dropdown="underline"
                   title="Time"
                   width="88px"
@@ -115,7 +161,9 @@ export default function CreateEvent({ isOpen, onClose }) {
                 />
                 <div className="w-[8px] h-[1px] bg-[#5B5F6E] mt-[24px]"></div>
                 <DropdownField
-                  options={['12:30', '01:30']}
+                  options={endTimeIntervals}
+                  placeholder={endTime}
+                  onChange={setEndTime}
                   dropdown="underline"
                   width="88px"
                   buttonVariant="transparent"
@@ -125,22 +173,30 @@ export default function CreateEvent({ isOpen, onClose }) {
             <div className="flex w-[488px] h-[40px] flex justify-between">
               <img src={icons['calendarIcon']} alt="" className="w-[16px] h-[16px] mt-[14px]" />
               <DropdownField
-                options={eventOptions}
+                options={calendars}
                 dropdown="underline"
                 width="456px"
-                placeholder={eventOptions[0]}
+                placeholder={calendars[0].title}
                 title="Calendar"
                 buttonVariant="transparent"
                 buttonIconRight="arrowDownIconBlack"
                 buttonPaddingRight="8px"
+                onChange={setSelectedCalendarId}
               />
             </div>
             <div className="flex gap-[16px] items-start">
               <img src={icons['descriptionIcon']} alt="" className="mt-[14px]" />
-              <Description title="Description" text="test" width="456px" />
+              <Description title="Description" text="test" width="456px" ref={descRef} />
             </div>
             <div className="flex justify-end">
-              <CustomButton variant="primary" text="Save" width="80px" />
+              <CustomButton onClick={() => {
+                console.log('date: ', storedEventDate);
+                console.log('title: ', titleRef.current?.values?.title);
+                console.log('id: ', selectedCalendarId);
+                console.log('desc: ', descRef.current.value);
+                console.log('time: ', selectedTime);
+                handleNewEvent();
+              }} variant="primary" text="Save" width="80px" />
             </div>
           </div>
         </div>

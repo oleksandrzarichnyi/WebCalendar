@@ -1,20 +1,56 @@
 [
   {
-    "title": "test1",
-    "color": "black",
-    "events": [],
-    "id": 1765650090252
-  },
-  {
     "title": "Untitled calendar",
-    "color": "#E25D33",
-    "events": [],
-    "id": 1765650095739
+    "color": "black",
+    "events": [
+      {
+        "title": "Untitled",
+        "date": "Not selected",
+        "desc": "No description",
+        "time": [
+          "12:00",
+          "12:15"
+        ],
+        "id": 1765830206579
+      },
+      {
+        "title": "Test 1",
+        "date": "December-3-2025",
+        "desc": "Test desc 1",
+        "time": [
+          "00:30",
+          "01:45"
+        ],
+        "id": 1765830248750
+      }
+    ],
+    "id": 1765830189127
   },
   {
-    "title": "test3",
-    "color": "#8332A4",
-    "events": [],
-    "id": 1765650102131
+    "title": "Test",
+    "color": "#6C7AC4",
+    "events": [
+      {
+        "title": "Untitled",
+        "date": "Not selected",
+        "desc": "No description",
+        "time": [
+          "12:00",
+          "12:15"
+        ],
+        "id": 1765830210787
+      },
+      {
+        "title": "Test 2",
+        "date": "December-21-2025",
+        "desc": "Test 2",
+        "time": [
+          "12:00",
+          "12:15"
+        ],
+        "id": 1765830275683
+      }
+    ],
+    "id": 1765830194347
   }
 ]

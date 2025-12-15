@@ -5,7 +5,6 @@ import InputField from '../../ui-kit/InputField/InputField'
 import icons from '../../ui-kit/icons/icons'
 import ColorPicker from '../../ui-kit/ColorPicker/ColorPicker.jsx'
 import { useRef, useState, useEffect } from 'react'
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getCalendars, addCalendar, updateCalendar } from '../../api/calendarsApi.jsx'
 

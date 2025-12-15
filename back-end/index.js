@@ -63,6 +63,7 @@ app.delete('/calendars/:id', (req, res) => {
   const updated = calendars.filter(calendar => calendar.id !== idToDelete);
 
   if (updated.length === calendars.length) return res.status(404).json('Calendar not found');
+  if (updated.length === 0) return;
 
   writeCalendars(updated);
   res.json(updated);
