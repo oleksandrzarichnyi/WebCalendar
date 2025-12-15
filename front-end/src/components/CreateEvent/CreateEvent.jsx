@@ -3,20 +3,19 @@ import CustomButton from '../../ui-kit/Buttons/CustomButton'
 import { Formik, Form, useFormikContext } from 'formik'
 import InputField from '../../ui-kit/InputField/InputField'
 import icons from '../../ui-kit/icons/icons'
-import { useRef, useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import DropdownField from '../../ui-kit/DropdownFields/DropdownField'
 import Description from '../../ui-kit/Description/Desctiption'
 import DatePicker from '../../ui-kit/DatePicker/DatePicker'
+import { useEventStore } from '../../hooks/useEventStore.jsx'
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getCalendars, addCalendar, deleteCalendar } from '../../api/calendarsApi.jsx'
+import { useQuery } from '@tanstack/react-query'
+import { getCalendars } from '../../api/calendarsApi.jsx'
 
 export default function CreateEvent({ isOpen, onClose }) {
   const [isDatePicker, setIsDatePicker] = useState(false);
-  const titleRef = useRef('');
 
-  const queryClient = useQueryClient();
-  const { data: calendars, isLoading } = useQuery({
+  const { data: calendars } = useQuery({
     queryKey: ['calendars'],
     queryFn: getCalendars
   });
@@ -26,9 +25,22 @@ export default function CreateEvent({ isOpen, onClose }) {
     return calendars.map(calendar => calendar.title);
   }, [calendars]);
 
-  console.log(eventOptions)
-
   const toggleDatePicker = () => setIsDatePicker(prev => !prev);
+
+  const { storedEventDate } = useEventStore();
+  const eventDate = (date) => {
+    if (!date) return '';
+
+    const input = new Date(date.replace(/-/g, ' '));
+
+    const formatted = new Intl.DateTimeFormat('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric'
+    }).format(input);
+
+    return formatted;
+  }
 
   return (
     <>
@@ -43,7 +55,6 @@ export default function CreateEvent({ isOpen, onClose }) {
             <div className="flex gap-[16px]">
               <img src={icons['titleIcon']} alt="" />
               <Formik
-                innerRef={titleRef}
                 initialValues={{ title: '' }}
               >
                 {({ errors, touched }) => (
@@ -65,26 +76,32 @@ export default function CreateEvent({ isOpen, onClose }) {
                 <img src={icons['clockIcon']} alt="" className="w-[16px] h-[16px]" />
                 {isDatePicker ? 
                   <div className="absolute z-30 top-[44px] left-[30px]">
-                    <DatePicker />
+                    <DatePicker useStore="Event" />
                   </div>
                 : ''}
                 <label onClick={toggleDatePicker}>
                   <Formik
-                    initialValues={{ date: '' }}
+                    initialValues={{ date: eventDate(storedEventDate) || '' }}
                   >
-                    {({errors, touched}) => (
-                      <InputField 
-                        type="text" 
-                        title="Date" 
-                        name="date" 
-                        placeholder="Choose a date" 
-                        errors={errors} 
-                        touched={touched} 
-                        height="40px" 
-                        width="240px"
-                        readOnly={true}
-                      />
-                    )}
+                    {({errors, touched, setFieldValue}) => {
+                      useEffect(() => {
+                        setFieldValue('date', eventDate(storedEventDate))
+                      }, [storedEventDate]);
+
+                      return (
+                        <InputField 
+                          type="text" 
+                          title="Date" 
+                          name="date" 
+                          placeholder="Choose a date" 
+                          errors={errors} 
+                          touched={touched} 
+                          height="40px" 
+                          width="240px"
+                          readOnly={true}
+                        />
+                      )
+                    }}
                   </Formik>
                 </label>
               </div>

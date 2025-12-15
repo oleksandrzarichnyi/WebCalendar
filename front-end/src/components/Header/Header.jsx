@@ -20,9 +20,6 @@ export default function Header() {
           </div>
           <p className={styles['date']}>{date.month} {date.year}</p>
         </div>
-        <div className="flex gap-[32px]">
-          <DropdownField dropdown="dropdown-weekday" buttonVariant="secondary" placeholder={'Week'} options={['Day', 'Week']} buttonIconRight="downIcon" buttonGap="4px" />
-        </div>
       </div>
     </div>
   )

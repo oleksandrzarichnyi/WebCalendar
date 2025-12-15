@@ -1,11 +1,24 @@
 import styles from './DatePicker.module.scss'
 import { useDateStore } from '../../hooks/useDateStore'
 import { MONTHS } from './MONTHS.jsx';
+import { useEffect } from 'react';
+import { useEventStore } from '../../hooks/useEventStore.jsx';
 
-export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDate, month, setCurrentYear, currentYear }) {
+export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDate, month, setCurrentYear, currentYear, useStore }) {
   const neededDays = () => 39 - MONTHS[monthIndex].days.length;
 
-  const { setStoredSelectedDate } = useDateStore();
+  const { setStoredSelectedDate, storedSelectedDate } = useDateStore();
+  const { storedEventDate, setStoredEventDate } = useEventStore();
+
+  if (useStore === 'Date') {
+    useEffect(() => {
+      setSelectedDate(storedSelectedDate);
+    }, [storedSelectedDate])
+  } else {
+    useEffect(() => {
+      setSelectedDate(storedEventDate);
+    }, [storedEventDate])
+  }
 
   const currentMonth = 
     month === 'current' 
@@ -67,7 +80,7 @@ export function MapDays({ monthIndex, setMonthIndex, selectedDate, setSelectedDa
             key={dayId}
             onClick={() => {
               handleDateSelect(dayId);
-              setStoredSelectedDate(dayId);
+              useStore === 'Date' ? setStoredSelectedDate(dayId) : setStoredEventDate(dayId);
             }}
           >
             <span>{day}</span>

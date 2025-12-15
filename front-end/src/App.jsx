@@ -5,12 +5,16 @@ import CustomButton from './ui-kit/Buttons/CustomButton.jsx'
 import Calendars from './components/Calendars/Calendars.jsx'
 import CreateEvent from './components/CreateEvent/CreateEvent.jsx'
 import { useState } from 'react'
+import { useEventStore } from './hooks/useEventStore.jsx'
 
 function App() {
   const [isCreateEvent, setIsCreateEvent] = useState(false);
 
+  const { setStoredEventDate } = useEventStore();
+
   function handleCreate() {
     setIsCreateEvent(prev => !prev);
+    setStoredEventDate('');
   }
 
   return (

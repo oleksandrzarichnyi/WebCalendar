@@ -3,19 +3,24 @@ import CustomButton from '../Buttons/CustomButton.jsx'
 import { useEffect, useState } from 'react'
 import { MapDays } from './MapDays.jsx'
 import { useDateStore } from '../../hooks/useDateStore.jsx'
+import { useEventStore } from '../../hooks/useEventStore.jsx'
 import { MONTHS } from './MONTHS.jsx'
 
-export default function DatePicker({ initialMonthIndex = 10 }) {
+const WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+export default function DatePicker({ initialMonthIndex = 10, useStore  = 'Date'}) {
   const [monthIndex, setMonthIndex] = useState(initialMonthIndex);
   const [currentYear, setCurrentYear] = useState(2025);
   const [selectedDate, setSelectedDate] = useState('');
 
   const currentMonth = MONTHS[monthIndex].name;
 
-  const { storedMonthIndex, setStoredMonthIndex, setYear, setMonth, date, storedSelectedDate } = useDateStore();
+  const { storedMonthIndex, setStoredMonthIndex, setYear, setMonth, date } = useStore === 'Date' ?  useDateStore() : useEventStore();
 
   useEffect(() => {
-    setStoredMonthIndex(monthIndex);
+    if (storedMonthIndex !== monthIndex) {
+      setStoredMonthIndex(monthIndex);
+    }
     setYear(currentYear);
     setMonth(currentMonth);
   }, [monthIndex]);
@@ -24,14 +29,11 @@ export default function DatePicker({ initialMonthIndex = 10 }) {
     if (storedMonthIndex !== null) {
       setMonthIndex(storedMonthIndex);
     }
-  }, [storedMonthIndex]);
+  }, []);
 
   useEffect(() => {
     setCurrentYear(date.year)
   }, [date.year]);
-
-  console.log(date);
-  console.log(storedSelectedDate);
 
   function handleNextMonth() {
     if (monthIndex === 11) {
@@ -53,6 +55,17 @@ export default function DatePicker({ initialMonthIndex = 10 }) {
     setMonthIndex(prev => prev - 1);
   }
 
+  function getFirstDayOfMonth(year, monthIndex) {
+    return new Date(year, monthIndex, 1).getDay();
+  }
+  const firstDay = getFirstDayOfMonth(currentYear, monthIndex);
+
+  const shift = (3 - firstDay + 7) % 7;
+  const syncedDays = [
+    ...WEEK_DAYS.slice(-shift),
+    ...WEEK_DAYS.slice(0, -shift)
+  ];
+
   return (
     <>
       <div className={styles['container']}>
@@ -65,13 +78,9 @@ export default function DatePicker({ initialMonthIndex = 10 }) {
         </div>
         <div className="flex max-w-full flex-col gap-[10px]">
           <div className={`flex max-w-full ${styles['days']}`}>
-            <p className={styles['day']}>S</p>
-            <p className={styles['day']}>M</p>
-            <p className={styles['day']}>T</p>
-            <p className={styles['day']}>W</p>
-            <p className={styles['day']}>T</p>
-            <p className={styles['day']}>F</p>
-            <p className={styles['day']}>S</p>
+            {syncedDays.map((day) => (
+              <p key={day} className={styles['day']}>{day[0]}</p>
+            ))}
           </div>
           <form className={styles['numbers']}>
             <MapDays 
@@ -82,6 +91,7 @@ export default function DatePicker({ initialMonthIndex = 10 }) {
               currentYear={currentYear}
               setCurrentYear ={setCurrentYear}
               month={'prev'} 
+              useStore={useStore}
             />
             <MapDays 
               monthIndex={monthIndex}
@@ -90,7 +100,8 @@ export default function DatePicker({ initialMonthIndex = 10 }) {
               setSelectedDate={setSelectedDate}
               currentYear={currentYear}
               setCurrentYear ={setCurrentYear}
-              month={'current'} 
+              month={'current'}
+              useStore={useStore}
             />
             <MapDays 
               monthIndex={monthIndex}
@@ -99,7 +110,8 @@ export default function DatePicker({ initialMonthIndex = 10 }) {
               setSelectedDate={setSelectedDate}
               currentYear={currentYear}
               setCurrentYear ={setCurrentYear}
-              month={'next'} 
+              month={'next'}
+              useStore={useStore}
             />
           </form>
         </div>
