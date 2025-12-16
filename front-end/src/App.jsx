@@ -24,7 +24,7 @@ function App() {
       <div className="container flex gap-[30px] py-[32px]">
         <div className="flex flex-col gap-[16px] relative">
           <CustomButton variant="primary" text="Create" icon="addIcon" maxWidth="240px" onClick={handleCreate} />
-          <div className="absolute flex">
+          <div className="absolute flex z-50">
             <CreateEvent isOpen={isCreateEvent} onClose={handleCreate} />
           </div>
           <DatePicker initialMonthIndex={11} />

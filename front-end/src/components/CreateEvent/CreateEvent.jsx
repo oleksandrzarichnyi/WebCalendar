@@ -67,6 +67,12 @@ export default function CreateEvent({ isOpen, onClose }) {
     return formatted;
   }
 
+  function handleOnClose() {
+    onClose();
+    setStartTime(TIME_INTERVALS[48]);
+    setEndTime(TIME_INTERVALS[49]);
+  }
+
   function handleNewEvent() {
     addEventMutation.mutate({
       id: selectedCalendarId,
@@ -85,13 +91,18 @@ export default function CreateEvent({ isOpen, onClose }) {
     setEndTime(TIME_INTERVALS[49]);
   }
 
+  const selectedCalendarTitle = () => {
+    const selectedCalendar = calendars.find(c => c.id === selectedCalendarId);
+    return selectedCalendar.title;
+  }
+
   return (
     <>
       {isOpen ? 
         <div className={styles['container']}>
           <div className="flex justify-between">
             <h2 className={styles['title']}>Create Event</h2>
-            <CustomButton icon="closeIcon" onClick={onClose} />
+            <CustomButton icon="closeIcon" onClick={handleOnClose} />
           </div>
           <div className="w-full h-[1px] bg-[#DEDFE5] my-[16px]"></div>
           <div className="flex flex-col gap-[24px]">
@@ -176,7 +187,7 @@ export default function CreateEvent({ isOpen, onClose }) {
                 options={calendars}
                 dropdown="underline"
                 width="456px"
-                placeholder={calendars[0].title}
+                placeholder={selectedCalendarTitle()}
                 title="Calendar"
                 buttonVariant="transparent"
                 buttonIconRight="arrowDownIconBlack"

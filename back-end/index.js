@@ -31,7 +31,7 @@ app.post('/calendars', (req, res) => {
   const calendars = readCalendars();
   const newCalendar = {
     title: req.body?.title || 'Untitled calendar',
-    color: req.body?.color || 'black',
+    color: req.body?.color || '#000000',
     events: [],
     id: Date.now(),
   };

@@ -4,3 +4,22 @@
   border-left: 1px solid #DEDFE5;
   border-bottom: 1px solid #DEDFE5;
 }
+
+.event {
+  width: 100%;
+  display: flex;
+}
+
+.event-line {
+  width: 4px;
+  height: 20px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.event-info {
+  width: 100%;
+}
+
+.event-title {
+}
