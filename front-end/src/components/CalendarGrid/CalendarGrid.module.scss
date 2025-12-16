@@ -1,0 +1,60 @@
+.container {
+  max-width: 1050px;
+  width: 100%;
+  height: 905px;
+  background: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.10);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: #323749;
+
+  &--grid {
+    width: 100%;
+    height: 100%;
+    padding-left: 70px;
+    overflow: scroll;
+  }
+}
+
+.header {
+  height: 60px;
+  padding-left: 70px;
+}
+
+.date-cell {
+  border-left: 1px solid #DEDFE5;
+  height: 100%;
+  padding: 5px 8px;
+}
+
+.date {
+  width: 123px;
+  height: 50px;
+  background-color: #DFF5E2;
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+  
+  &-number {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 22px;
+  }
+
+  &-day {
+    font-size: 10px;
+    line-height: 12px;
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: #DEDFE5;
+  box-shadow: 0px 1px 2px #DEDFE5;
+}

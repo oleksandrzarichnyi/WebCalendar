@@ -6,6 +6,7 @@ import Calendars from './components/Calendars/Calendars.jsx'
 import CreateEvent from './components/CreateEvent/CreateEvent.jsx'
 import { useState } from 'react'
 import { useEventStore } from './hooks/useEventStore.jsx'
+import CalendarGrid from './components/CalendarGrid/CalendarGrid.jsx'
 
 function App() {
   const [isCreateEvent, setIsCreateEvent] = useState(false);
@@ -20,8 +21,8 @@ function App() {
   return (
     <>
       <Header />
-      <div className="container">
-        <div className="flex flex-col gap-[16px] py-[32px] relative">
+      <div className="container flex gap-[30px] py-[32px]">
+        <div className="flex flex-col gap-[16px] relative">
           <CustomButton variant="primary" text="Create" icon="addIcon" maxWidth="240px" onClick={handleCreate} />
           <div className="absolute flex">
             <CreateEvent isOpen={isCreateEvent} onClose={handleCreate} />
@@ -29,6 +30,7 @@ function App() {
           <DatePicker initialMonthIndex={11} />
           <Calendars />
         </div>
+        <CalendarGrid />
       </div>
     </>
   )
