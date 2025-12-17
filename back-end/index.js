@@ -56,6 +56,23 @@ app.patch('/calendars/:id', (req, res) => {
   res.json({ message: 'Calendar updated' });
 });
 
+app.put('/calendars/:calendarId/events/:eventId', (req, res) => {
+  const calendars = readCalendars();
+  const calendarId = Number(req.params.calendarId);
+  const eventId = Number(req.params.eventId);
+
+  const calendar = calendars.find(calendar => calendar.id === calendarId);
+  if (!calendar) return res.status(404).json({ error: 'Calendar not found' });
+
+  const eventIndex = calendar.events.findIndex(event => event.id === eventId);
+  if (eventIndex === -1) return res.status(404).json({ error: 'Event not found' });
+
+  calendar.events[eventIndex] = { ...calendar.events[eventIndex], ...req.body };
+
+  writeCalendars(calendars);
+  res.json({ message: 'Event updated' });
+});
+
 app.delete('/calendars/:id', (req, res) => {
   const calendars = readCalendars();
   const idToDelete = Number(req.params.id);

@@ -8,6 +8,7 @@
 .event {
   width: 100%;
   display: flex;
+  cursor: pointer;
 }
 
 .event-line {
@@ -19,7 +20,21 @@
 
 .event-info {
   width: 100%;
+  
+  &--padding {
+    padding: 8px;
+  }
+}
+
+.event-text-wrap {
+  display: flex;
+  flex-direction: column;
 }
 
 .event-title {
+  font-size: 15px;
+}
+
+.event-time {
+  font-size: 12px;
 }

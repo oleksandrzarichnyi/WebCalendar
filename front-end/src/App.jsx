@@ -7,15 +7,19 @@ import CreateEvent from './components/CreateEvent/CreateEvent.jsx'
 import { useState } from 'react'
 import { useEventStore } from './hooks/useEventStore.jsx'
 import CalendarGrid from './components/CalendarGrid/CalendarGrid.jsx'
+import { useDateStore } from './hooks/useDateStore.jsx'
 
 function App() {
   const [isCreateEvent, setIsCreateEvent] = useState(false);
 
-  const { setStoredEventDate } = useEventStore();
+  const { setStoredEventDate, storedEventDate } = useEventStore();
+  const { storedSelectedDate } = useDateStore();
 
   function handleCreate() {
     setIsCreateEvent(prev => !prev);
-    setStoredEventDate('');
+    if (storedSelectedDate !== storedEventDate) {
+      setStoredEventDate('');
+    }
   }
 
   return (

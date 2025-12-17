@@ -15,7 +15,18 @@
     width: 100%;
     height: 100%;
     padding-left: 70px;
-    overflow: scroll;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #DEDFE5;
+      height: 20px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
   }
 }
 

@@ -1,80 +1,36 @@
 [
   {
     "title": "Untitled calendar",
-    "color": "#E25D33",
+    "color": "#16AF6E",
     "events": [
       {
         "title": "Test1",
-        "date": "December-3-2025",
-        "desc": "No description",
+        "date": "December-18-2025",
+        "desc": "asdfaf",
         "time": [
-          "12:15",
-          "14:00"
+          "03:45",
+          "04:45"
         ],
-        "id": 1765925455920
-      },
-      {
-        "title": "test 4",
-        "date": "Not selected",
-        "desc": "No description",
-        "time": [
-          "01:00",
-          "01:30"
-        ],
-        "id": 1765925548854
+        "id": 1766011679645
       }
     ],
-    "id": 1765925419514
+    "id": 1766011650928
   },
   {
-    "title": "test",
-    "color": "#429488",
-    "events": [
-      {
-        "title": "Test 2",
-        "date": "December-12-2025",
-        "desc": "No description",
-        "time": [
-          "05:00",
-          "05:30"
-        ],
-        "id": 1765925487692
-      }
-    ],
-    "id": 1765925465723
-  },
-  {
-    "title": "test 2",
+    "title": "Test",
     "color": "#D90056",
     "events": [
       {
-        "title": "test 3",
-        "date": "December-13-2025",
-        "desc": "No description",
+        "title": "Test2",
+        "date": "December-18-2025",
+        "desc": "fdfasdf",
         "time": [
-          "00:15",
-          "00:45"
+          "02:30",
+          "04:15"
         ],
-        "id": 1765925522817
+        "id": 1766011706209
       }
     ],
-    "id": 1765925504355
-  },
-  {
-    "title": "1",
-    "color": "#4254AF",
-    "events": [
-      {
-        "title": "1",
-        "date": "December-13-2025",
-        "desc": "No description",
-        "time": [
-          "08:45",
-          "09:45"
-        ],
-        "id": 1765926149671
-      }
-    ],
-    "id": 1765926063816
+    "id": 1766011656299
   }
 ]

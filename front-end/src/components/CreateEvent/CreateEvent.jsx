@@ -8,21 +8,35 @@ import DropdownField from '../../ui-kit/DropdownFields/DropdownField'
 import Description from '../../ui-kit/Description/Desctiption'
 import DatePicker from '../../ui-kit/DatePicker/DatePicker'
 import { useEventStore } from '../../hooks/useEventStore.jsx'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { updateCalendar } from '../../api/calendarsApi.jsx'
-import { getCalendars } from '../../api/calendarsApi.jsx'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { getCalendars, updateCalendar, updateEvent } from '../../api/calendarsApi.jsx'
 import { TIME_INTERVALS } from './TIME_INTERVALS.jsx'
+import { useDateStore } from '../../hooks/useDateStore.jsx'
 
-export default function CreateEvent({ isOpen, onClose }) {
+export default function CreateEvent({ isOpen, onClose, eventData, calendarData, title = 'Create' }) {
   const [isDatePicker, setIsDatePicker] = useState(false);
 
+  const queryClient = useQueryClient();
   const { data: calendars } = useQuery({
     queryKey: ['calendars'],
     queryFn: getCalendars
   });
 
   const addEventMutation = useMutation({
-    mutationFn: updateCalendar
+    mutationFn: updateCalendar,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['calendars'] });
+    }
+  });
+
+  const editEventMutation = useMutation({
+    mutationFn: updateEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['calendars'] });
+    },
+    onError: (error) => {
+      console.log(error);
+    }
   });
 
   const [selectedCalendarId, setSelectedCalendarId] = useState(null);
@@ -45,16 +59,34 @@ export default function CreateEvent({ isOpen, onClose }) {
   }, [startTime]);
 
   useEffect(() => {
-    if (calendars && calendars.length > 0) {
+    if (calendarData?.calendarId) {
+      setSelectedCalendarId(calendarData.calendarId);
+    } else if (calendars && calendars.length > 0) {
       setSelectedCalendarId(calendars[0].id);
     }
-  }, [calendars]);
+  }, [calendars, calendarData]);
+
+  useEffect(() => {
+    if (eventData) {
+      setStartTime(TIME_INTERVALS[TIME_INTERVALS.indexOf(eventData?.time[0])]);
+      setEndTime(TIME_INTERVALS[TIME_INTERVALS.indexOf(eventData?.time[1])]);
+    }
+  }, [eventData]);
 
   const toggleDatePicker = () => setIsDatePicker(prev => !prev);
 
-  const { storedEventDate } = useEventStore();
+  const { storedEventDate, setStoredEventDate } = useEventStore();
+  const { storedSelectedDate } = useDateStore();
+
+  useEffect(() => {
+    if (storedSelectedDate && title === 'Create') {
+      setStoredEventDate(storedSelectedDate);
+    }
+  }, [storedSelectedDate]);
+
   const eventDate = (date) => {
     if (!date) return '';
+    if (date === 'Not selected') return;
 
     const input = new Date(date.replace(/-/g, ' '));
 
@@ -91,9 +123,28 @@ export default function CreateEvent({ isOpen, onClose }) {
     setEndTime(TIME_INTERVALS[49]);
   }
 
+  function handleEditEvent(calendarId, eventId) {
+    editEventMutation.mutate({
+      calendarId: calendarId,
+      eventId: eventId,
+      data: {
+        title: titleRef.current?.values?.title || 'Untitled',
+        date: storedEventDate || 'Not selected',
+        desc: descRef.current.value || 'No description',
+        time: selectedTime
+      }
+    });
+    onClose();
+  }
+
   const selectedCalendarTitle = () => {
+    if (calendarData) {
+      const selectedCalendar = calendars.find(c => c.id === calendarData.id);
+      return selectedCalendar.title;
+    }
+
     const selectedCalendar = calendars.find(c => c.id === selectedCalendarId);
-    return selectedCalendar.title;
+    return selectedCalendar?.title;
   }
 
   return (
@@ -101,7 +152,7 @@ export default function CreateEvent({ isOpen, onClose }) {
       {isOpen ? 
         <div className={styles['container']}>
           <div className="flex justify-between">
-            <h2 className={styles['title']}>Create Event</h2>
+            <h2 onClick={() => console.log(calendarData)} className={styles['title']}>{title} Event</h2>
             <CustomButton icon="closeIcon" onClick={handleOnClose} />
           </div>
           <div className="w-full h-[1px] bg-[#DEDFE5] my-[16px]"></div>
@@ -109,7 +160,7 @@ export default function CreateEvent({ isOpen, onClose }) {
             <div className="flex gap-[16px]">
               <img src={icons['titleIcon']} alt="" />
               <Formik
-                initialValues={{ title: '' }}
+                initialValues={{ title: eventData?.title || '' }}
                 innerRef={titleRef}
               >
                 {({ errors, touched }) => (
@@ -163,7 +214,7 @@ export default function CreateEvent({ isOpen, onClose }) {
               <div className="flex gap-[8px]">
                 <DropdownField
                   options={TIME_INTERVALS}
-                  placeholder={TIME_INTERVALS[48]}
+                  placeholder={startTime}
                   onChange={setStartTime}
                   dropdown="underline"
                   title="Time"
@@ -197,17 +248,21 @@ export default function CreateEvent({ isOpen, onClose }) {
             </div>
             <div className="flex gap-[16px] items-start">
               <img src={icons['descriptionIcon']} alt="" className="mt-[14px]" />
-              <Description title="Description" text="test" width="456px" ref={descRef} />
+              <Description 
+                title="Description" 
+                text="test" 
+                width="456px" 
+                ref={descRef} 
+                initalValue={eventData?.desc}
+              />
             </div>
             <div className="flex justify-end">
-              <CustomButton onClick={() => {
-                console.log('date: ', storedEventDate);
-                console.log('title: ', titleRef.current?.values?.title);
-                console.log('id: ', selectedCalendarId);
-                console.log('desc: ', descRef.current.value);
-                console.log('time: ', selectedTime);
-                handleNewEvent();
-              }} variant="primary" text="Save" width="80px" />
+              <CustomButton 
+                onClick={() => title === 'Create' ? handleNewEvent() : handleEditEvent(calendarData.id, eventData.id)} 
+                variant="primary" 
+                text="Save" 
+                width="80px" 
+              />
             </div>
           </div>
         </div>

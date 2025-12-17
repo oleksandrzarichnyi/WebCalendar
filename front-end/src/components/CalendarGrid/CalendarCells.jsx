@@ -2,7 +2,11 @@ import styles from './CalendarCells.module.scss'
 import { TIME_HOURS } from './TIME_HOURS'
 import { useQuery } from '@tanstack/react-query'
 import { getCalendars } from '../../api/calendarsApi'
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import CreateEvent from '../CreateEvent/CreateEvent.jsx'
+import { useEventStore } from '../../hooks/useEventStore.jsx';
+import { useDateStore } from '../../hooks/useDateStore.jsx';
+import { useCalendarStore } from '../../hooks/useCalendarStore.jsx';
 
 export default function CalendarCells() {
   const { data: calendars } = useQuery({
@@ -14,7 +18,7 @@ export default function CalendarCells() {
     if (!calendars) return [];
     
     return calendars.map(calendar => ({
-      calendarId: calendar.id,
+      id: calendar.id,
       color: calendar.color,
       events: calendar.events
     }));
@@ -37,33 +41,66 @@ export default function CalendarCells() {
     const start = toMinutes(time[0]);
     const end = toMinutes(time[1]);
 
-    return `${((end - start) / 15) * 20}px`;
+    return `${((end - start) / 15) * 20}`;
   };
   
   const topMargin = (time) => 20 * (time / 15);
 
+  const [isCreateEvent, setIsCreateEvent] = useState(false);
+
+  const { setStoredEventDate } = useEventStore();
+  const { storedSelectedDate } = useDateStore();
+
+  function handleCreateEvent(event, calendar) {
+    setIsCreateEvent(prev => !prev);
+    setStoredEventDate(event.date !== 'Not selected' ? event.date : '');
+    setSelectedEvent(event);
+    setSelectedCalendar(calendar);
+  }
+
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedCalendar, setSelectedCalendar] = useState(null);
+
+  const { storedCalendars } = useCalendarStore();
+
   return (
     <>
+      <div className="absolute left-[40%] top-[30%] z-30">
+        <CreateEvent 
+          onClose={() => setIsCreateEvent(false)} 
+          title="Edit" 
+          eventData={selectedEvent}
+          calendarData={selectedCalendar}
+          isOpen={isCreateEvent} 
+        />
+      </div>
       {TIME_HOURS.map((hour) => (
         <div key={hour} className={`${styles['cell']} relative`}>
           <p className={`absolute ${hour === '00:00' ? 'left-[-53px]' : 'top-[-9px] left-[-53px]'}`}>{hour}</p>
           {eventsData.map(eventObj => {
             return eventObj.events.map(event => 
-              event.time[0].slice(0, 2).includes(hour.slice(0, 2)) ? 
-                <div 
-                  key={event.id}
-                  className={`${styles['event']} absolute z-30`}
-                  style={{ top: `${topMargin(event.time[0].slice(3))}px` }}
-                >
-                  <div 
-                    style={{ backgroundColor: eventObj.color, height: eventHeight(event.time) }} 
-                    className={styles['event-line']}
-                  ></div>
-                  <div 
-                    style={{ backgroundColor: hexToRgba(eventObj.color, 0.3), height: eventHeight(event.time) }} 
-                    className={styles['event-info']}
+              event.time[0].slice(0, 2).includes(hour.slice(0, 2)) 
+              && storedCalendars.find(c => c.id === eventObj.id)?.isDisplayed 
+              && event.date === storedSelectedDate ?
+                <div key={event.id}>
+                  <div
+                    className={`${styles['event']} absolute z-20`}
+                    style={{ top: `${topMargin(event.time[0].slice(3))}px` }}
+                    onClick={() => handleCreateEvent(event, eventObj)}
                   >
-                    <p className={styles['event-title']}>{`${event.title}, ${event.time[0]} - ${event.time[1]}`}</p>
+                    <div 
+                      style={{ backgroundColor: eventObj.color, height: `${eventHeight(event.time)}px` }} 
+                      className={styles['event-line']}
+                    ></div>
+                    <div 
+                      style={{ backgroundColor: hexToRgba(eventObj.color, 0.3), height: `${eventHeight(event.time)}px` }} 
+                      className={`${styles['event-info']} ${eventHeight(event.time) > 20 ? styles['event-info--padding'] : ''}`}
+                    >
+                      <p className={`${eventHeight(event.time) > 40 ? styles['event-text-wrap'] : ''}`}>
+                        <span className={styles['event-title']}>{`${event.title}, `}</span> 
+                        <span className={styles['event-time']}>{`${event.time[0]} - ${event.time[1]}`}</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
             : null

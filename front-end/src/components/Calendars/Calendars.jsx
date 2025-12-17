@@ -4,7 +4,8 @@ import Checkbox from '../../ui-kit/Checkbox/Checkbox.jsx'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getCalendars, addCalendar, deleteCalendar } from '../../api/calendarsApi.jsx'
 import CreateCalendar from './CreateCalendar.jsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useCalendarStore } from '../../hooks/useCalendarStore.jsx'
 
 export default function Calendars() {
   const queryClient = useQueryClient();
@@ -19,6 +20,14 @@ export default function Calendars() {
       queryClient.invalidateQueries({ queryKey: ['calendars'] });
     }
   });
+
+  const { storedCalendars, setStoredCalendars, handleDisplay } = useCalendarStore();
+
+  useEffect(() => {
+    if (calendars) {
+      setStoredCalendars(calendars);
+    }
+  }, [calendars]);
 
   const [isCreateShown, setIsCreateShown] = useState(false);
   const [isEditShown, setIsEditShown] = useState(false);
@@ -44,18 +53,24 @@ export default function Calendars() {
           />
         </div>
         <div className="flex flex-col gap-[8px] relative">
-          {calendars.map((calendar) => (
-            <div key={calendar.id} className={`${styles['calendar']} flex justify-between relative`}>
-              <Checkbox text={calendar.title} color={calendar.color} />
-              <div className={`${styles['buttons']} flex gap-[8px]`}>
-                {calendars.length > 1 && <CustomButton icon="deleteIcon" onClick={() => deleteCalendarMutation.mutate(calendar.id)} />}
-                <CustomButton 
-                  icon="editIcon" 
-                  onClick={() => handleEdit(calendar)} 
-                />
+          {storedCalendars.map((calendar) => {
+            return (
+              <div key={calendar.id} className={`${styles['calendar']} flex justify-between relative`}>
+                <Checkbox 
+                  isChecked={calendar.isDisplayed} 
+                  text={calendar.title} 
+                  color={calendar.color} 
+                  onChange={() => handleDisplay(calendar.id)} />
+                <div className={`${styles['buttons']} flex gap-[8px]`}>
+                  {calendars.length > 1 && <CustomButton icon="deleteIcon" onClick={() => deleteCalendarMutation.mutate(calendar.id)} />}
+                  <CustomButton 
+                    icon="editIcon" 
+                    onClick={() => handleEdit(calendar)} 
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
           <CreateCalendar 
             isShown={isEditShown} 
             title="Edit"

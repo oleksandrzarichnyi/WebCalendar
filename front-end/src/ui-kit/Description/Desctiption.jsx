@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import styles from './Description.module.scss'
 
-export default function Description({ title, text, maxWidth, width, type, ref }) {
+export default function Description({ title, text, maxWidth, width, type, ref, initalValue }) {
+  const [value, setValue] = useState(initalValue || '');
+
   return (
     <>
       <div 
@@ -15,7 +18,12 @@ export default function Description({ title, text, maxWidth, width, type, ref })
             {text}
           </p>
         : 
-          <textarea ref={ref} className={styles['textarea']} ></textarea>
+          <textarea 
+            ref={ref} 
+            value={value} 
+            onChange={(e) => setValue(e.target.value)}
+            className={styles['textarea']} 
+          ></textarea>
         }
         <div className={styles['underline']}></div>
       </div> 
