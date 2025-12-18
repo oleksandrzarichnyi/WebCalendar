@@ -59,8 +59,8 @@ export default function CreateEvent({ isOpen, onClose, eventData, calendarData, 
   }, [startTime]);
 
   useEffect(() => {
-    if (calendarData?.calendarId) {
-      setSelectedCalendarId(calendarData.calendarId);
+    if (calendarData?.id) {
+      setSelectedCalendarId(calendarData.id);
     } else if (calendars && calendars.length > 0) {
       setSelectedCalendarId(calendars[0].id);
     }
@@ -131,9 +131,11 @@ export default function CreateEvent({ isOpen, onClose, eventData, calendarData, 
         title: titleRef.current?.values?.title || 'Untitled',
         date: storedEventDate || 'Not selected',
         desc: descRef.current.value || 'No description',
-        time: selectedTime
+        time: selectedTime,
+        targetCalendarId: selectedCalendarId
       }
     });
+    console.log(`${calendarId} + ${selectedCalendarId}`);
     onClose();
   }
 
@@ -152,7 +154,7 @@ export default function CreateEvent({ isOpen, onClose, eventData, calendarData, 
       {isOpen ? 
         <div className={styles['container']}>
           <div className="flex justify-between">
-            <h2 onClick={() => console.log(calendarData)} className={styles['title']}>{title} Event</h2>
+            <h2 onClick={() => console.log(`${calendarData} + ${selectedCalendarId}`)} className={styles['title']}>{title} Event</h2>
             <CustomButton icon="closeIcon" onClick={handleOnClose} />
           </div>
           <div className="w-full h-[1px] bg-[#DEDFE5] my-[16px]"></div>

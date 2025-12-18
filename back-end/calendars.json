@@ -1,24 +1,7 @@
 [
   {
-    "title": "Untitled calendar",
+    "title": "Calendar 1766011650928",
     "color": "#16AF6E",
-    "events": [
-      {
-        "title": "Test1",
-        "date": "December-18-2025",
-        "desc": "asdfaf",
-        "time": [
-          "03:45",
-          "04:45"
-        ],
-        "id": 1766011679645
-      }
-    ],
-    "id": 1766011650928
-  },
-  {
-    "title": "Test",
-    "color": "#D90056",
     "events": [
       {
         "title": "Test2",
@@ -28,7 +11,26 @@
           "02:30",
           "04:15"
         ],
-        "id": 1766011706209
+        "id": 1766011706209,
+        "targetCalendarId": 1766011650928
+      }
+    ],
+    "id": 1766011650928
+  },
+  {
+    "title": "Calendar 1766011656299",
+    "color": "#D90056",
+    "events": [
+      {
+        "title": "Test1",
+        "date": "December-18-2025",
+        "desc": "asdfaf",
+        "time": [
+          "03:45",
+          "04:45"
+        ],
+        "id": 1766011679645,
+        "targetCalendarId": 1766011656299
       }
     ],
     "id": 1766011656299

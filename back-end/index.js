@@ -69,6 +69,16 @@ app.put('/calendars/:calendarId/events/:eventId', (req, res) => {
 
   calendar.events[eventIndex] = { ...calendar.events[eventIndex], ...req.body };
 
+  const targetCalendarId = req.body.targetCalendarId;
+  if (targetCalendarId !== calendar.id) {
+    const targetCalendar = calendars.find(c => c.id === targetCalendarId);
+    if (!targetCalendar) return res.status(404).json({ error: 'Target calendar not found' });
+
+    const eventToMove = calendar.events[eventIndex];
+    calendar.events.splice(eventIndex, 1);
+    targetCalendar.events.push(eventToMove);
+  }
+
   writeCalendars(calendars);
   res.json({ message: 'Event updated' });
 });
