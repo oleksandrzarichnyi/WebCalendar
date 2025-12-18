@@ -101,8 +101,10 @@ export default function CreateEvent({ isOpen, onClose, eventData, calendarData, 
 
   function handleOnClose() {
     onClose();
-    setStartTime(TIME_INTERVALS[48]);
-    setEndTime(TIME_INTERVALS[49]);
+    if (title === 'Create' ) {
+      setStartTime(TIME_INTERVALS[48]);
+      setEndTime(TIME_INTERVALS[49]);
+    }
   }
 
   function handleNewEvent() {

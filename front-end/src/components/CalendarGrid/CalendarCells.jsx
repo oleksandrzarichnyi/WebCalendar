@@ -2,11 +2,12 @@ import styles from './CalendarCells.module.scss'
 import { TIME_HOURS } from './TIME_HOURS'
 import { useQuery } from '@tanstack/react-query'
 import { getCalendars } from '../../api/calendarsApi'
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react'
 import CreateEvent from '../CreateEvent/CreateEvent.jsx'
-import { useEventStore } from '../../hooks/useEventStore.jsx';
-import { useDateStore } from '../../hooks/useDateStore.jsx';
-import { useCalendarStore } from '../../hooks/useCalendarStore.jsx';
+import { useEventStore } from '../../hooks/useEventStore.jsx'
+import { useDateStore } from '../../hooks/useDateStore.jsx'
+import { useCalendarStore } from '../../hooks/useCalendarStore.jsx'
+import EventInfo from '../EventInfo/EventInfo.jsx'
 
 export default function CalendarCells() {
   const { data: calendars } = useQuery({
@@ -20,7 +21,8 @@ export default function CalendarCells() {
     return calendars.map(calendar => ({
       id: calendar.id,
       color: calendar.color,
-      events: calendar.events
+      events: calendar.events,
+      title: calendar.title
     }));
   }, [calendars]);
 
@@ -51,8 +53,8 @@ export default function CalendarCells() {
   const { setStoredEventDate } = useEventStore();
   const { storedSelectedDate } = useDateStore();
 
-  function handleCreateEvent(event, calendar) {
-    setIsCreateEvent(prev => !prev);
+  function handleEventInfo(event, calendar) {
+    setIsEventInfo(prev => !prev);
     setStoredEventDate(event.date !== 'Not selected' ? event.date : '');
     setSelectedEvent(event);
     setSelectedCalendar(calendar);
@@ -61,13 +63,25 @@ export default function CalendarCells() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
 
+  const [isEventInfo, setIsEventInfo] = useState(false);
+
   const { storedCalendars } = useCalendarStore();
 
   return (
     <>
-      <div className="absolute left-[40%] top-[30%] z-30">
+      <div className="absolute left-[40%] top-[30%] z-30 flex flex-col gap-[30px]">
+        <EventInfo 
+          isOpen={isEventInfo}
+          onClose={() => setIsEventInfo(prev => !prev)}
+          eventData={selectedEvent}
+          calendarData={selectedCalendar}
+          onEdit={() => {
+            setIsCreateEvent(prev => !prev);
+            setIsEventInfo(prev => !prev);
+          }}
+        />
         <CreateEvent 
-          onClose={() => setIsCreateEvent(false)} 
+          onClose={setIsCreateEvent} 
           title="Edit" 
           eventData={selectedEvent}
           calendarData={selectedCalendar}
@@ -86,7 +100,7 @@ export default function CalendarCells() {
                   <div
                     className={`${styles['event']} absolute z-20`}
                     style={{ top: `${topMargin(event.time[0].slice(3))}px` }}
-                    onClick={() => handleCreateEvent(event, eventObj)}
+                    onClick={() => handleEventInfo(event, eventObj)}
                   >
                     <div 
                       style={{ backgroundColor: eventObj.color, height: `${eventHeight(event.time)}px` }} 
