@@ -8,13 +8,17 @@ export default function CalendarGrid() {
   function parseDate(dateStr) {
     if (!dateStr) return;
 
-    const date = new Date(dateStr.replace(/-/g, ' '));
-    const day = new Intl.DateTimeFormat('en-US', {
-      weekday: 'short'
-    }).format(date).toUpperCase();
+    const [month, day, year] = dateStr.split('-');
+    const date = new Date(`${month} ${day}, ${year}`);
+
+    if (isNaN(date)) return;
+
+    const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'short' })
+      .format(date)
+      .toUpperCase();
 
     return {
-      day,
+      day: weekday,
       number: date.getDate()
     };
   }
