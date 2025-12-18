@@ -46,3 +46,12 @@ export async function updateEvent({ calendarId, eventId, data }) {
 
   return res.json();
 }
+
+export async function deleteEvent({ calendarId, eventId }) {
+  const res = await fetch(`${BASE_URL}/calendars/${calendarId}/events/${eventId}`, { method: 'DELETE' });
+
+  if (!res.ok) throw new Error('Failed to delete');
+
+  return res.json();
+}
+

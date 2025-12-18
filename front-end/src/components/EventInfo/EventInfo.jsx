@@ -1,6 +1,8 @@
 import styles from './EventInfo.module.scss'
 import CustomButton from '../../ui-kit/Buttons/CustomButton'
 import icons from '../../ui-kit/icons/icons'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteEvent } from '../../api/calendarsApi'
 
 export default function EventInfo({ isOpen, calendarData, eventData, onClose, onEdit }) {
   const eventDate = (date) => {
@@ -18,6 +20,22 @@ export default function EventInfo({ isOpen, calendarData, eventData, onClose, on
     return formatted;
   }
 
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation({
+    mutationFn: deleteEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['calendars']);
+    }
+  });
+
+  function handleDelete(calendarId, eventId) {
+    deleteMutation.mutate({
+      calendarId: calendarId,
+      eventId: eventId,
+    });
+    onClose();
+  }
+
   return (
     <>
       {isOpen ?
@@ -26,7 +44,7 @@ export default function EventInfo({ isOpen, calendarData, eventData, onClose, on
             <h2 className={styles['title']}>Event information</h2>
             <div className="flex gap-[24px]">
               <CustomButton onClick={onEdit} icon="editIcon" />
-              <CustomButton icon="deleteIcon" />
+              <CustomButton onClick={() => handleDelete(calendarData.id, eventData.id)} icon="deleteIcon" />
               <CustomButton onClick={onClose} icon="closeIcon" />
             </div>
           </div>

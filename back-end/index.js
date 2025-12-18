@@ -83,6 +83,22 @@ app.put('/calendars/:calendarId/events/:eventId', (req, res) => {
   res.json({ message: 'Event updated' });
 });
 
+app.delete('/calendars/:calendarId/events/:eventId', (req, res) => {
+  const calendars = readCalendars();
+
+  const calendar = calendars.find(calendar => calendar.id === Number(req.params.calendarId));
+  if (!calendar) return res.status(404).json({ error: 'Calendar not found' });
+
+  const eventToDelete = calendar.events.find(event => event.id === Number(req.params.eventId));
+  if (!eventToDelete) return res.status(404).json({ error: 'Event not found' });
+
+  const updated = calendar.events.filter(event => event.id !== eventToDelete.id);
+  calendar.events = updated;
+
+  writeCalendars(calendars);
+  res.json({ message: 'Event deleted' });
+});
+
 app.delete('/calendars/:id', (req, res) => {
   const calendars = readCalendars();
   const idToDelete = Number(req.params.id);
