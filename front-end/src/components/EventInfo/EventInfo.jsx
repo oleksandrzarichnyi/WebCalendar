@@ -5,23 +5,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteEvent } from '../../api/calendarsApi'
 import DeleteEvent from '../DeleteEvent/DeleteEvent'
 import { useState } from 'react'
+import { parseEventDate } from '../../utils/dateFormatters'
 
 export default function EventInfo({ isOpen, calendarData, eventData, onClose, onEdit }) {
-  const eventDate = (date) => {
-    if (!date) return '';
-    if (date === 'Not selected') return;
-
-    const input = new Date(date.replace(/-/g, ' '));
-
-    const formatted = new Intl.DateTimeFormat('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric'
-    }).format(input);
-
-    return formatted;
-  }
-
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: deleteEvent,
@@ -60,7 +46,7 @@ export default function EventInfo({ isOpen, calendarData, eventData, onClose, on
             </div>
             <div className="flex gap-[16px] items-center">
               <img src={icons['clockIcon']} alt="" />
-              <p className={styles['event-text']}>{`${eventDate(eventData.date)}, ${eventData.time[0]} - ${eventData.time[1]}`}</p>
+              <p className={styles['event-text']}>{`${parseEventDate(eventData.date)}, ${eventData.time[0]} - ${eventData.time[1]}`}</p>
             </div>
             <div className="flex gap-[16px] items-center">
               <img src={icons['calendarIcon']} alt="" />

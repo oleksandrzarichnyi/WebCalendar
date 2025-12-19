@@ -1,29 +1,12 @@
 import styles from './CalendarGrid.module.scss'
 import CalendarCells from './CalendarCells.jsx'
 import { useDateStore } from '../../hooks/useDateStore.jsx'
+import { parseSelectedDay } from '../../utils/dateFormatters.jsx';
 
 export default function CalendarGrid() {
   const { storedSelectedDate } = useDateStore();
 
-  function parseDate(dateStr) {
-    if (!dateStr) return;
-
-    const [month, day, year] = dateStr.split('-');
-    const date = new Date(`${month} ${day}, ${year}`);
-
-    if (isNaN(date)) return;
-
-    const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'short' })
-      .format(date)
-      .toUpperCase();
-
-    return {
-      day: weekday,
-      number: date.getDate()
-    };
-  }
-
-  const selectedDate = parseDate(storedSelectedDate);
+  const selectedDate = parseSelectedDay(storedSelectedDate);
 
   return (
     <>

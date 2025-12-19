@@ -12,6 +12,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getCalendars, updateCalendar, updateEvent } from '../../api/calendarsApi.jsx'
 import { TIME_INTERVALS } from './TIME_INTERVALS.jsx'
 import { useDateStore } from '../../hooks/useDateStore.jsx'
+import { parseEventDate } from '../../utils/dateFormatters.jsx'
 
 export default function CreateEvent({ isOpen, onClose, eventData, calendarData, title = 'Create' }) {
   const [isDatePicker, setIsDatePicker] = useState(false);
@@ -84,21 +85,6 @@ export default function CreateEvent({ isOpen, onClose, eventData, calendarData, 
     }
   }, [storedSelectedDate]);
 
-  const eventDate = (date) => {
-    if (!date) return '';
-    if (date === 'Not selected') return;
-
-    const input = new Date(date.replace(/-/g, ' '));
-
-    const formatted = new Intl.DateTimeFormat('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric'
-    }).format(input);
-
-    return formatted;
-  }
-
   function handleOnClose() {
     onClose();
     if (title === 'Create' ) {
@@ -137,7 +123,6 @@ export default function CreateEvent({ isOpen, onClose, eventData, calendarData, 
         targetCalendarId: selectedCalendarId
       }
     });
-    console.log(`${calendarId} + ${selectedCalendarId}`);
     onClose();
   }
 
@@ -191,11 +176,11 @@ export default function CreateEvent({ isOpen, onClose, eventData, calendarData, 
                 : ''}
                 <label onClick={toggleDatePicker}>
                   <Formik
-                    initialValues={{ date: eventDate(storedEventDate) || '' }}
+                    initialValues={{ date: parseEventDate(storedEventDate) || '' }}
                   >
                     {({errors, touched, setFieldValue}) => {
                       useEffect(() => {
-                        setFieldValue('date', eventDate(storedEventDate))
+                        setFieldValue('date', parseEventDate(storedEventDate))
                       }, [storedEventDate]);
 
                       return (
