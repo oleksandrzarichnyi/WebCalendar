@@ -1,0 +1,23 @@
+.container {
+  width: 522px;
+  background: white;
+  box-shadow: 0px 16px 50px rgba(0, 0, 0, 0.24);
+  border-radius: 8px;
+  padding: 16px 18px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+  color: #323749;
+  z-index: 30;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.text {
+  font-size: 15px;
+  line-height: 20px;
+}

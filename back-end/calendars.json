@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Calendar 1766011650928",
+    "color": "#16AF6E",
+    "events": [
+      {
+        "title": "Untitled",
+        "date": "December-18-2025",
+        "desc": "No description",
+        "time": [
+          "02:00",
+          "03:00"
+        ],
+        "id": 1766091001225
+      }
+    ],
+    "id": 1766011650928
+  },
+  {
+    "title": "Calendar 1766011656299",
+    "color": "#D90056",
+    "events": [
+      {
+        "title": "Test1345",
+        "date": "December-18-2025",
+        "desc": "asdfaf",
+        "time": [
+          "03:45",
+          "04:45"
+        ],
+        "id": 1766011679645,
+        "targetCalendarId": 1766011656299
+      }
+    ],
+    "id": 1766011656299
+  }
+]
