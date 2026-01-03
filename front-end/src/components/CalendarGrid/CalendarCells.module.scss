@@ -1,0 +1,40 @@
+.cell {
+  width: 100%;
+  height: 80px;
+  border-left: 1px solid #DEDFE5;
+  border-bottom: 1px solid #DEDFE5;
+}
+
+.event {
+  width: 100%;
+  display: flex;
+  cursor: pointer;
+}
+
+.event-line {
+  width: 4px;
+  height: 20px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.event-info {
+  width: 100%;
+  
+  &--padding {
+    padding: 8px;
+  }
+}
+
+.event-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-title {
+  font-size: 15px;
+}
+
+.event-time {
+  font-size: 12px;
+}
