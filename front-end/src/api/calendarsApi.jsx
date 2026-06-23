@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://webcalendar-production-0273.up.railway.app';
 
 export async function getCalendars() {
   return fetch(`${BASE_URL}/calendars`).then(res => res.json());
