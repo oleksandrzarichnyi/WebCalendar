@@ -112,6 +112,8 @@ app.delete('/calendars/:id', (req, res) => {
   res.json(updated);
 });
 
-app.listen(3000, () => {
-  console.log('server is running');
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

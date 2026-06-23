@@ -10,7 +10,7 @@ const WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frid
 
 export default function DatePicker({ initialMonthIndex = 10, useStore  = 'Date'}) {
   const [monthIndex, setMonthIndex] = useState(initialMonthIndex);
-  const [currentYear, setCurrentYear] = useState(2025);
+  const [currentYear, setCurrentYear] = useState(2026);
   const [selectedDate, setSelectedDate] = useState('');
 
   const currentMonth = MONTHS[monthIndex].name;

@@ -53,7 +53,7 @@ export const useDateStore = create((set, get) => ({
     }));
   },
 
-  storedSelectedDate: '',
+  storedSelectedDate: 'June-23-2026',
 
   setStoredSelectedDate: (day) => {
     set({

@@ -1,37 +1,57 @@
 [
   {
-    "title": "Calendar 1766011650928",
-    "color": "#16AF6E",
-    "events": [
-      {
-        "title": "Untitled",
-        "date": "December-18-2025",
-        "desc": "No description",
-        "time": [
-          "02:00",
-          "03:00"
-        ],
-        "id": 1766091001225
-      }
-    ],
-    "id": 1766011650928
-  },
-  {
-    "title": "Calendar 1766011656299",
+    "title": "Test Calendar 1",
     "color": "#D90056",
     "events": [
       {
-        "title": "Test1345",
-        "date": "December-18-2025",
-        "desc": "asdfaf",
+        "title": "Test Event 1",
+        "date": "June-23-2026",
+        "desc": "Test event 1",
         "time": [
-          "03:45",
-          "04:45"
+          "07:00",
+          "07:45"
         ],
-        "id": 1766011679645,
-        "targetCalendarId": 1766011656299
+        "id": 1782219419721
+      },
+      {
+        "title": "Test Event 2",
+        "date": "June-23-2026",
+        "desc": "Test Event 2",
+        "time": [
+          "09:00",
+          "10:30"
+        ],
+        "id": 1782219467277,
+        "targetCalendarId": 1782219383099
       }
     ],
-    "id": 1766011656299
+    "id": 1782219383099
+  },
+  {
+    "title": "Test Calendar 2",
+    "color": "#16AF6E",
+    "events": [
+      {
+        "title": "Test Event 1",
+        "date": "June-23-2026",
+        "desc": "Test event 1",
+        "time": [
+          "08:00",
+          "08:30"
+        ],
+        "id": 1782219531936
+      },
+      {
+        "title": "Test Event 2",
+        "date": "June-23-2026",
+        "desc": "Test Event 2",
+        "time": [
+          "12:00",
+          "15:30"
+        ],
+        "id": 1782219556151
+      }
+    ],
+    "id": 1782219497334
   }
 ]

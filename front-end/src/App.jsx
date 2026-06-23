@@ -31,7 +31,7 @@ function App() {
           <div className="absolute flex z-50">
             <CreateEvent isOpen={isCreateEvent} onClose={handleCreate} />
           </div>
-          <DatePicker initialMonthIndex={11} />
+          <DatePicker initialMonthIndex={5} />
           <Calendars />
         </div>
         <CalendarGrid />
